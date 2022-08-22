@@ -9,7 +9,8 @@ from .resnet import resnet50
 class Model(nn.Module):
   def __init__(self, local_conv_out_channels=128, num_classes=None):
     super(Model, self).__init__()
-    self.base = resnet50(pretrained=True)
+    # self.base = resnet50(pretrained=True)
+    self.base = resnet50(pretrained=False)
     planes = 2048
     self.local_conv = nn.Conv2d(planes, local_conv_out_channels, 1)
     self.local_bn = nn.BatchNorm2d(local_conv_out_channels)

@@ -2,3 +2,10 @@
 exp/
 tmp/
 *.pyc
+
+ckpts/
+eq_sp_test/
+imgs/
+sample*/
+sample_*.jpg
+yoloweights/

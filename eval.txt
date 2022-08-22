@@ -1,0 +1,120 @@
+person-1
+success_score:: 0.7844257316852973
+precision_score:: 0.9869010685970355
+normalized_precision_score:: 0.8345938858135463
+success_rate: 0.9937952430196484
+
+person-2
+success_score:: 0.7939318288823923
+precision_score:: 0.951023223729593
+normalized_precision_score:: 0.8279027407697962
+success_rate: 0.990802483329501
+
+person-3
+success_score:: 0.7992479774121735
+precision_score:: 0.9811858608893956
+normalized_precision_score:: 0.8432546336664654
+success_rate: 1.0
+
+person-4
+success_score:: 0.795693382584543
+precision_score:: 0.963319302465424
+normalized_precision_score:: 0.8333156473653803
+success_rate: 0.9903788334335538
+
+person-5
+success_score:: 0.7980396825396826
+precision_score:: 0.996
+normalized_precision_score:: 0.818330065359477
+success_rate: 1.0
+
+person-6
+success_score:: 0.764283831117472
+precision_score:: 0.950698655417875
+normalized_precision_score:: 0.8065812668331241
+success_rate: 0.9534669127339837
+
+person-7
+success_score:: 0.7706561649829728
+precision_score:: 0.9540551338393928
+normalized_precision_score:: 0.7903300353301529
+success_rate: 0.9992009588493808
+
+person-8
+success_score:: 0.7844159169043963
+precision_score:: 0.9934715821812596
+normalized_precision_score:: 0.821933074304991
+success_rate: 1.0
+
+person-9
+success_score:: 0.8116996145716772
+precision_score:: 0.9955613577023499
+normalized_precision_score:: 0.8424973122408229
+success_rate: 0.9971279373368146
+
+person-10
+success_score:: 0.8057311420143278
+precision_score:: 0.9595448798988622
+normalized_precision_score:: 0.8592746833246574
+success_rate: 0.9974715549936789
+
+person-11
+success_score:: 0.7067598123586785
+precision_score:: 0.7965981573352232
+normalized_precision_score:: 0.7624129736940841
+success_rate: 0.8936924167257264
+
+person-12
+success_score:: 0.8091191150681235
+precision_score:: 0.9461756373937678
+normalized_precision_score:: 0.8679664500361051
+success_rate: 1.0
+
+person-13
+success_score:: 0.8234642694287017
+precision_score:: 0.9890560875512996
+normalized_precision_score:: 0.8983664601271425
+success_rate: 1.0
+
+person-14
+success_score:: 0.7963907785336358
+precision_score:: 0.996031746031746
+normalized_precision_score:: 0.8345782757547465
+success_rate: 0.998015873015873
+
+person-15
+success_score:: 0.7913351016799292
+precision_score:: 0.9648541114058355
+normalized_precision_score:: 0.8470250169033132
+success_rate: 0.9734748010610079
+
+person-16
+success_score:: 0.824270772429026
+precision_score:: 0.9972714870395635
+normalized_precision_score:: 0.8768959152555974
+success_rate: 1.0
+
+person-17
+success_score:: 0.8224115334207078
+precision_score:: 1.0
+normalized_precision_score:: 0.8724890567847935
+success_rate: 1.0
+
+person-18
+success_score:: 0.8213464696223317
+precision_score:: 0.9666666666666667
+normalized_precision_score:: 0.8718954248366012
+success_rate: 0.9850574712643678
+
+person-19
+success_score:: 0.8546080028969762
+precision_score:: 1.0
+normalized_precision_score:: 0.9088198016849326
+success_rate: 1.0
+
+person-20
+success_score:: 0.8230728755590635
+precision_score:: 1.0
+normalized_precision_score:: 0.8639909002274943
+success_rate: 0.9972375690607734
+
