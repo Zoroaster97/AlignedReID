@@ -120,8 +120,8 @@ with torch.no_grad():
             break
 
 assert init
-src_acc_prob_hist = get_hist_color_hsv(template_image)
 template_image = cv2.resize(template_image,(64, 128))
+src_acc_prob_hist = get_hist_color_hsv(template_image)
 template_image = cv2.cvtColor(template_image, cv2.COLOR_RGB2BGR)
 
 # a = torch.rand(1,512).cuda()
@@ -131,7 +131,9 @@ template_image = cv2.cvtColor(template_image, cv2.COLOR_RGB2BGR)
 with torch.no_grad():
     while True:
         p_imgs = []
+        p_feats = []
         show_p_imgs = []
+        raw_pimgs = []
         sc_img = cv2.imread(os.path.join(imgdir, img_files[i]))
         sc_img = cv2.cvtColor(sc_img, cv2.COLOR_BGR2RGB)
         # boxes = detect.detect_image(model, sc_img)
@@ -145,6 +147,7 @@ with torch.no_grad():
                 p_img = (sc_img[int(y1): int(y2), int(x1): int(x2), :])
                 # specifiy hist
                 p_img = cv2.resize(p_img,(128, 256))
+                raw_pimgs.append(p_img)
                 p_img = specify_hist_color_hsv(src_acc_prob_hist, p_img)
                 show_p_imgs.append(p_img)
                 p_img.swapaxes(0, 2)
@@ -160,6 +163,7 @@ with torch.no_grad():
         else: 
             tracking_box = boxes[0]
         md_idx = 0
+        refresh = False
         if len(p_imgs) > 1:
             # p_imgs = torch.cat(p_imgs)  # shape(h, w) need to be aligned
             min_dis = float('inf')
@@ -167,6 +171,7 @@ with torch.no_grad():
             for idx, p_img in enumerate(p_imgs):
                 p_feat, _ = reid_model(p_img)
                 p_feat = normalize(p_feat)
+                p_feats.append(p_feat)
                 dis = EuclideanDistances(init_feat, p_feat)
                 dis = dis.item()
                 cur_box = boxes[idx]
@@ -180,6 +185,22 @@ with torch.no_grad():
                     md_idx = idx
                     # print(idx)
             tracking_box = boxes[md_idx]
+            refresh = True
+        elif len(p_imgs) == 1:
+            p_img = p_imgs[0]
+            p_feat, _ = reid_model(p_img)
+            p_feat = normalize(p_feat)
+            p_feats.append(p_feat)
+            dis = EuclideanDistances(init_feat, p_feat)
+            dis = dis.item()
+            cur_box = boxes[0]
+            cx1, cy1, cx2, cy2, _, _ = cur_box
+            cx1, cy1, cx2, cy2 = max(1, cx1), max(1, cy1), min((IMG_W - 1), cx2), min((IMG_H - 1), cy2)
+            cv2.rectangle(sc_img, (int(cx1), int(cy1)), (int(cx2), int(cy2)), (0,255,0), 2)
+            cv2.putText(sc_img, '%.3f' % (dis*100), (int(cx1), int(cy1)-5), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1)
+            min_dis = dis
+            md_idx = 0
+            refresh = True
         x1, y1, x2, y2, conf, cls = tracking_box
         x1, y1, x2, y2 = max(1, x1), max(1, y1), min((IMG_W - 1), x2), min((IMG_H - 1), y2)
 
@@ -194,6 +215,14 @@ with torch.no_grad():
         sc_img[:128, 64:128, :] = tracking_obj[:,:,:]
         cv2.rectangle(sc_img, (int(x1), int(y1)), (int(x2), int(y2)), (0,0,255), 2)
         cv2.imshow('img', sc_img)
+
+        if refresh:
+            if min_dis*100 < 22:
+                # print(i, min_dis)
+                init_feat = p_feats[md_idx]
+                template_image = tracking_obj
+                src_acc_prob_hist = get_hist_color_hsv(raw_pimgs[md_idx])
+
         key = cv2.waitKey()
         if key == ord('q'):
             break

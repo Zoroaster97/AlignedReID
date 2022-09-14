@@ -40,19 +40,22 @@ def get_acc_prob_hist(hist):
     return acc_hist
 
 def get_hist_color_hsv(img):
-    h, s, v = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2HSV))
+    # h, s, v = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2HSV))
+    h, s, v = cv2.split(cv2.cvtColor(img, cv2.COLOR_RGB2HSV))
     img_hist = cv2.calcHist([v], [0], None, [256], [0.0, 255.0])
     img_acc_prob_hist = get_acc_prob_hist(img_hist)
     return img_acc_prob_hist
 
 def specify_hist_color_hsv(src_acc_prob_hist, dst_img):
-    dst_H, dst_S, dst_V = cv2.split(cv2.cvtColor(dst_img, cv2.COLOR_BGR2HSV))
+    # dst_H, dst_S, dst_V = cv2.split(cv2.cvtColor(dst_img, cv2.COLOR_BGR2HSV))
+    dst_H, dst_S, dst_V = cv2.split(cv2.cvtColor(dst_img, cv2.COLOR_RGB2HSV))
     dst_hist = cv2.calcHist([dst_V], [0], None, [256], [0.0, 255.0])
     dst_acc_prob_hist = get_acc_prob_hist(dst_hist)
     diff_acc_prob = abs(np.tile(src_acc_prob_hist.reshape(256, 1), (1, 256)) - dst_acc_prob_hist.reshape(1, 256))
     table = np.argmin(diff_acc_prob, axis=0).astype(np.int8)
     sp_V = cv2.LUT(dst_V, table).astype(np.uint8)
-    sp_image = cv2.cvtColor(cv2.merge([dst_H, dst_S, sp_V]), cv2.COLOR_HSV2BGR)
+    # sp_image = cv2.cvtColor(cv2.merge([dst_H, dst_S, sp_V]), cv2.COLOR_HSV2BGR)
+    sp_image = cv2.cvtColor(cv2.merge([dst_H, dst_S, sp_V]), cv2.COLOR_HSV2RGB)
     return sp_image
 
 
@@ -84,7 +87,8 @@ trf = T.Compose([
 # imgdir = "H:\\workspace\\luotongan\\SavedCamData\\test4\\spimg"
 # imgdir = "H:\\workspace\\luotongan\\SavedCamData\\test4\\spimg2"
 # imgdir = "H:\\workspace\\luotongan\\Annotating\\test8\\img"
-imgdir = "H:\\workspace\\luotongan\\SavedCamData\\test16\\img"
+# imgdir = "H:\\workspace\\luotongan\\SavedCamData\\test16\\img"
+imgdir = "H:\\workspace\\luotongan\\SavedCamData\\test1661415972578\\img"
 img_files = os.listdir(imgdir)
 init = False
 idx = 0
@@ -141,8 +145,8 @@ with torch.no_grad():
                 # p_img = torch.tensor(sc_img[int(y1): int(y2), int(x1): int(x2), :], dtype=torch.float32).unsqueeze(0).permute(0, 3, 1, 2).cuda()
                 p_img = (sc_img[int(y1): int(y2), int(x1): int(x2), :])
                 # specifiy hist
-                p_img = specify_hist_color_hsv(src_acc_prob_hist, p_img)
                 p_img = cv2.resize(p_img,(128, 256))
+                p_img = specify_hist_color_hsv(src_acc_prob_hist, p_img)
                 p_img.swapaxes(0, 2)
                 p_img.swapaxes(1, 2)
                 p_img = trf(p_img).unsqueeze(0).cuda()

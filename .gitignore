@@ -9,3 +9,7 @@ imgs/
 sample*/
 sample_*.jpg
 yoloweights/
+
+*.txt
+*.jpg
+*.mp4
